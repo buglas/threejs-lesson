@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>牛刀小试p</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="https://unpkg.com/three/build/three.js"></script>
+  <script>
+    // 场景
+    const scene = new THREE.Scene()
+    // 相机
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    )
+    // 渲染器
+    const renderer = new THREE.WebGLRenderer()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    document.body.appendChild(renderer.domElement)
+
+    // 几何体
+    const geometry = new THREE.BoxGeometry()
+    // 材质
+    const material = new THREE.MeshNormalMaterial()
+    // 网格
+    const cube = new THREE.Mesh(geometry, material)
+    scene.add(cube)
+
+    camera.position.z = 5
+
+    !(function animate() {
+      cube.rotation.x += 0.01
+      cube.rotation.y += 0.01
+      console.log(cube.matrix.elements);
+      renderer.render(scene, camera)
+      requestAnimationFrame(animate)
+    })()
+
+  </script>
+</body>
+
+</html>
