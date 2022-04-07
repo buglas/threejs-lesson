@@ -1,0 +1,14 @@
+.App {
+  height: 100%;
+  overflow: hidden;
+}
+#plane{
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+  padding: 0 18px;
+  transform: translate(12px,-100%);
+  display: none;
+}
