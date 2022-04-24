@@ -1,0 +1,42 @@
+p {
+  text-indent: 2em;
+  line-height: 24px;
+  font-size: 14px;
+}
+
+.cont {
+  width: 80%;
+  max-width: 900px;
+  margin: auto;
+}
+.inllustration{
+  position: relative;
+  float: left;
+}
+.canvasWrapper {
+  margin-right: 15px;
+  transition-property: width, height;
+  transition-duration: 1s, 1s;
+}
+
+.small {
+  width: 150px;
+  height: 150px;
+}
+
+.big {
+  width: 100%;
+  height: 100%;
+}
+
+.canvasWrapper canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
