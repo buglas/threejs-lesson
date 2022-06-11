@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect } from 'react'
 import {
 	BoxGeometry,
 	BufferGeometry,
@@ -27,28 +27,34 @@ import {
 	ShapeGeometry,
 	SphereGeometry,
 	WebGLRenderer,
-} from "three"
-import Stage from "../component/Stage"
-import "./fullScreen.css"
-import { GUI } from "dat.gui"
-import AxisGridHelper from "../component/AxisGridHelper"
+} from 'three'
+import Stage from '../component/Stage'
+import './fullScreen.css'
+import AxesGridHelper from '../component/AxesGridHelper'
+import { GUI } from 'dat.gui'
 
 const stage = new Stage()
 const { scene, renderer, camera } = stage
 
-// 相机
+// 设置相机的视点位、目标点和上方向，使其变成俯视状态
 camera.position.set(0, 20, 0)
 camera.up.set(0, 0, -1)
 camera.lookAt(0, 0, 0)
 
-// 太阳、地球和月亮都共用一个圆
+// 点光源
+const color = 0xffffff
+const intensity = 3
+const light = new PointLight(color, intensity)
+scene.add(light)
+
+// 太阳、地球和月亮都共用一个球体
 const radius = 1
 const widthSegments = 6
 const heightSegments = 6
 const sphereGeometry = new SphereGeometry(radius, widthSegments, heightSegments)
 
-//需要旋转的三维对象集合
-const objects: (Group | Mesh<BufferGeometry, Material>)[] = []
+//需要旋转的对象集合
+const objects: Object3D[] = []
 
 // 太阳坐标系
 const solarSystem = new Group()
@@ -67,15 +73,15 @@ moonSystem.position.x = 2
 earthSystem.add(moonSystem)
 objects.push(moonSystem)
 
-// 太阳
-const sunMaterial = new MeshPhongMaterial({ emissive: 0xff9600 })
+//  太阳
+const sunMaterial = new MeshPhongMaterial({ emissive: 0xffff00 })
 const sunMesh = new Mesh(sphereGeometry, sunMaterial)
 solarSystem.add(sunMesh)
 
 // 地球
 const earthMaterial = new MeshPhongMaterial({
-	color: 0x00acec,
-	emissive: 0x00acec,
+	color: 0x2233ff,
+	emissive: 0x112244,
 })
 const earthMesh = new Mesh(sphereGeometry, earthMaterial)
 earthMesh.scale.set(0.5, 0.5, 0.5)
@@ -90,12 +96,12 @@ const moonMesh = new Mesh(sphereGeometry, moonMaterial)
 moonMesh.scale.set(0.2, 0.2, 0.2)
 moonSystem.add(moonMesh)
 
-// 点光源
-const color = 0xffffff
-const intensity = 3
-const light = new PointLight(color, intensity)
-scene.add(light)
-
+// 辅助对象
+/* objects.forEach((obj) => {
+	new AxesGridHelper(obj)
+})
+ */
+// 渲染之前
 stage.beforeRender = (time = 0) => {
 	time *= 0.001
 	objects.forEach((obj) => {
@@ -103,26 +109,22 @@ stage.beforeRender = (time = 0) => {
 	})
 }
 
-/* objects.forEach((obj) => {
-	new AxisGridHelper(obj)
-}) */
-
-// GUI
+// 调试
 const gui = new GUI({ autoPlace: false })
-function makeAxisGrid(obj: Object3D, label: string) {
-	const helper = new AxisGridHelper(obj)
-	gui.add(helper, "visible").name(label)
+makeAxesGrid(solarSystem, 'solarSystem')
+makeAxesGrid(earthSystem, 'earthSystem')
+makeAxesGrid(moonSystem, 'moonSystem')
+function makeAxesGrid(obj: Object3D, label: string) {
+	const helper = new AxesGridHelper(obj)
+	gui.add(helper, 'visible').name(label)
 }
-makeAxisGrid(solarSystem, "solarSystem")
-makeAxisGrid(earthSystem, "earthSystem")
-makeAxisGrid(moonSystem, "moonSystem")
 
 const Universe: React.FC = (): JSX.Element => {
 	const divRef = useRef<HTMLDivElement>(null)
 	useEffect(() => {
 		const { current } = divRef
 		if (current) {
-			current.innerHTML = ""
+			current.innerHTML = ''
 			current.append(renderer.domElement)
 			current.append(gui.domElement)
 			stage.animate()

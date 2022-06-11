@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect } from 'react'
 import {
 	BoxGeometry,
 	BufferGeometry,
@@ -32,19 +32,21 @@ import {
 	Vector2,
 	Vector3,
 	WebGLRenderer,
-} from "three"
-import Stage from "../component/Stage"
-import "./fullScreen.css"
-import { GUI } from "dat.gui"
+} from 'three'
+import Stage from '../component/Stage'
+import './fullScreen.css'
+import { GUI } from 'dat.gui'
 
 const stage = new Stage()
 const { scene, renderer } = stage
+// 背景色
 renderer.setClearColor(0xaaaaaa)
+// 开启投影
 renderer.shadowMap.enabled = true
 
-// 主相机
+// 主相机，统揽全局
 const camera = makeCamera()
-camera.position.set(8, 4, 10).multiplyScalar(2)
+camera.position.set(16, 8, 20)
 camera.lookAt(0, 0, 0)
 stage.camera = camera
 
@@ -64,7 +66,6 @@ stage.camera = camera
 	light.shadow.camera.bottom = -d
 	light.shadow.camera.near = 1
 	light.shadow.camera.far = 50
-	light.shadow.bias = 0.001
 }
 
 {
@@ -83,26 +84,24 @@ groundMesh.receiveShadow = true
 scene.add(groundMesh)
 
 // 坦克
-const carRadius = 1
-const bodyCenterY = (carRadius * 3) / 2
 const tank = new Group()
 scene.add(tank)
 // 坦克相机
+const carRadius = 1
+const bodyCenterY = (carRadius * 3) / 2
 const tankCameraFov = 75
 const tankCamera = makeCamera(tankCameraFov)
 tankCamera.position.y = 5
 tankCamera.position.z = -10
 tankCamera.lookAt(0, bodyCenterY, 0)
 tank.add(tankCamera)
-
-// 车身
+// 坦克车身
 const bodyGeometry = new SphereGeometry(carRadius)
 const bodyMaterial = new MeshPhongMaterial({ color: 0x6688aa })
 const bodyMesh = new Mesh(bodyGeometry, bodyMaterial)
 bodyMesh.position.y = bodyCenterY
 bodyMesh.castShadow = true
 tank.add(bodyMesh)
-
 // 车轱辘
 const wheelRadius = 0.6
 const wheelThickness = 0.5
@@ -125,23 +124,23 @@ const wheelMeshes = [-cx, cx].map((x) => {
 })
 
 // 炮筒
+const barrel = new Group()
+barrel.position.y = bodyCenterY + 0.3
+tank.add(barrel)
+// 炮筒模型
 const barrelSize = 0.3
 const barrelLength = 5
-const barrel = new Group()
-barrel.position.y = 0.3
-// 炮筒模型
 const barrelGeometry = new BoxGeometry(barrelSize, barrelSize, barrelLength)
 const barrelMesh = new Mesh(barrelGeometry, bodyMaterial)
 barrelMesh.position.z = barrelLength / 2
 barrelMesh.castShadow = true
 barrel.add(barrelMesh)
-bodyMesh.add(barrel)
 // 炮管相机
 const barrelCamera = makeCamera()
 barrelCamera.position.y = 1.4
 barrel.add(barrelCamera)
 
-// 目标-负责目标的整体高度
+// 目标-负责目标的整体位置
 const target = new Group()
 target.position.z = 2
 target.position.y = 4
@@ -170,11 +169,12 @@ targetCameraPivot.add(targetCamera)
 
 //坦克移动路径
 const curve = new SplineCurve([
-	new Vector2(-6, 8),
-	new Vector2(-8, -8),
+	new Vector2(-6, -2),
+	new Vector2(-6, -8),
 	new Vector2(8, 0),
-	new Vector2(-6, 15),
-	new Vector2(-6, 8),
+	new Vector2(3, 8),
+	new Vector2(-6, 4),
+	new Vector2(-6, -2),
 ])
 const points = curve.getPoints(50)
 const geometry = new BufferGeometry().setFromPoints(points)
@@ -191,17 +191,17 @@ const tankTarget = new Vector2()
 // 目标位
 const targetPosition = new Vector3()
 
-// GUI切换相机
+// GUI 切换相机
 const gui = new GUI({ autoPlace: false })
 const cameras: Map<string, PerspectiveCamera> = new Map([
-	["camera", camera],
-	["barrelCamera", barrelCamera],
-	["targetCamera", targetCamera],
-	["tankCamera", tankCamera],
+	['camera', camera],
+	['barrelCamera', barrelCamera],
+	['targetCamera', targetCamera],
+	['tankCamera', tankCamera],
 ])
 
-const curCamera = { name: "camera" }
-gui.add(curCamera, "name", [...cameras.keys()]).onChange((key: string) => {
+const curCamera = { name: 'camera' }
+gui.add(curCamera, 'name', [...cameras.keys()]).onChange((key: string) => {
 	const {
 		domElement: { clientWidth, clientHeight },
 	} = renderer
@@ -233,7 +233,7 @@ stage.beforeRender = (time = 0) => {
 		obj.rotation.x = time * 3
 	})
 
-	// 上下摆动目标对象
+	// 目标对象的上下浮动
 	targetBob.position.y = Math.sin(time * 2) * 2
 
 	// 获取目标点的世界位
@@ -241,17 +241,16 @@ stage.beforeRender = (time = 0) => {
 	// 炮筒指向目标点
 	barrel.lookAt(targetPosition)
 
-	if (curCamera.name === "barrelCamera") {
+	if (curCamera.name === 'barrelCamera') {
 		// 炮筒相机看向目标点
 		barrelCamera.lookAt(targetPosition)
-	} else if (curCamera.name === "targetCamera") {
+	} else if (curCamera.name === 'targetCamera') {
 		// 目标相机看向坦克
 		tank.getWorldPosition(targetPosition)
 		targetCameraPivot.lookAt(targetPosition)
 	}
 }
 
-// 建立相机
 function makeCamera(fov = 40) {
 	const aspect = 2
 	const zNear = 0.1
@@ -264,7 +263,7 @@ const Tank: React.FC = (): JSX.Element => {
 	useEffect(() => {
 		const { current } = divRef
 		if (current) {
-			current.innerHTML = ""
+			current.innerHTML = ''
 			current.append(renderer.domElement)
 			current.append(gui.domElement)
 			stage.animate()

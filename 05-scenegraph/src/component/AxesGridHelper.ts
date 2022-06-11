@@ -1,8 +1,11 @@
-import { AxesHelper, GridHelper, LineBasicMaterial, Object3D } from "three"
+import { AxesHelper, GridHelper, LineBasicMaterial, Object3D } from 'three'
 
-export default class AxisGridHelper {
+export default class AxesGridHelper {
+	// 栅格辅助对象
 	grid: GridHelper
+	// 坐标轴辅助对象
 	axes: AxesHelper
+	// 可见性
 	_visible: boolean = true
 	constructor(obj: Object3D, size = 2) {
 		const axes = new AxesHelper()
