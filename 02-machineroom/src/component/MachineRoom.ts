@@ -34,7 +34,7 @@ export default class MachineRoom {
   onMouseOutCabinet = () => {};
 
   // 初始化场景
-  constructor(canvas: HTMLCanvasElement, modelPath: string = "./models/") {
+  constructor(canvas: HTMLCanvasElement, modelPath: string = "https://ycyy-cdn.oss-cn-beijing.aliyuncs.com/") {
     this.renderer = new WebGLRenderer({ canvas });
     this.scene = new Scene();
     this.camera = new PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
