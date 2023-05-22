@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import {
+	AddOperation,
 	AmbientLight,
 	BufferAttribute,
 	Color,
@@ -7,15 +8,19 @@ import {
 	DirectionalLight,
 	DoubleSide,
 	EquirectangularReflectionMapping,
+	Fog,
 	Mesh,
 	MeshBasicMaterial,
 	MeshLambertMaterial,
 	MeshPhongMaterial,
+	MixOperation,
+	MultiplyOperation,
 	PlaneGeometry,
 	SphereGeometry,
 	sRGBEncoding,
 	TextureLoader,
 } from 'three'
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import Stage from '../component/Stage'
 import './fullScreen.css'
 
@@ -36,13 +41,12 @@ const ballSpecularTexture = textureLoader.load('/textures/ball/specular.jpg')
 const lightTexture = textureLoader.load('/textures/ball/light.jpg')
 const shopTexture = textureLoader.load('/textures/environment/shop.jpg')
 shopTexture.mapping = EquirectangularReflectionMapping
+const ballBumpTexture = textureLoader.load('/textures/ball/bump.jpg')
 
 /* 几何体 */
 const sphereGeometry = new SphereGeometry(1, 36, 36)
-sphereGeometry.setAttribute(
-	'uv2',
-	new BufferAttribute(sphereGeometry.attributes.uv.array, 2)
-)
+
+sphereGeometry.setAttribute('uv2', sphereGeometry.attributes.uv)
 
 /* 材质 */
 const mat = new MeshBasicMaterial({
@@ -76,10 +80,35 @@ mat.aoMap = ballAmbientOcclusionTexture
 mat.lightMap = lightTexture
 mat.lightMapIntensity = 1.3
 // 环境贴图
-mat.envMap = shopTexture
-mat.reflectivity = 0.1
+// 低质量的jpg环境光
+// mat.envMap = shopTexture
+// 高质量的hdr环境光
+new RGBELoader().loadAsync('/textures/environment/shop.hdr').then((texture) => {
+	texture.mapping = EquirectangularReflectionMapping
+	mat.envMap = texture
+})
+
+// 反射
+mat.reflectivity = 0.5
+
+// 表面颜色与envMap的合成方式
+mat.combine = MultiplyOperation
+// mat.combine = MixOperation
+// mat.combine = AddOperation
+
 // 高光
 // mat.specularMap = ballSpecularTexture
+// 雾效
+scene.fog = new Fog(0xffffff, 3, 10)
+mat.fog = false
+// 折射
+mat.refractionRatio = 0.2
+/* 
+mat.refractionRatio = 0.2
+textureLoader.load('/textures/environment/shop.jpg', (texture) => {
+	texture.mapping = EquirectangularReflectionMapping
+	mat.envMap = texture
+})  */
 
 //球体
 scene.add(new Mesh(sphereGeometry, mat))
