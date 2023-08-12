@@ -51,6 +51,7 @@ const ballDisplacementTexture = textureLoader.load(
 )
 const ballNormalTexture = textureLoader.load('/textures/ball/normal.jpg')
 const alphaTexture = textureLoader.load('/textures/ball/alpha2.jpg')
+const alphaTexture3 = textureLoader.load('/textures/ball/alpha3.png')
 
 /* 几何体 */
 const sphereGeometry = new SphereGeometry(1, 36, 36)
@@ -65,7 +66,7 @@ mat.clearcoat = 1
 // 透明涂层强度贴图
 // mat.clearcoatMap = stripeTexture
 // 透明图层法线贴图
-mat.clearcoatNormalMap = ballNormalTexture
+// mat.clearcoatNormalMap = ballNormalTexture
 // 透明图层法线的强度
 // mat.clearcoatNormalScale = new Vector2(0.5, 0.5)
 
@@ -101,9 +102,13 @@ mat.clearcoatNormalMap = ballNormalTexture
 // mat.reflectivity = 0.3
 
 // 高光强度
-// mat.specularIntensity = 10
+mat.specularIntensity = 10
+
+// 高光贴图
+mat.specularIntensityMap = alphaTexture3
+
 // 高光颜色
-// mat.specularColor = new Color('red')
+mat.specularColor = new Color('red')
 
 scene.add(new Mesh(sphereGeometry, mat))
 
