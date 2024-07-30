@@ -1,28 +1,11 @@
 import React, { useRef, useEffect } from 'react'
 import {
-	AmbientLight,
-	BufferAttribute,
-	CanvasTexture,
 	Color,
-	CubeRefractionMapping,
-	CubeTextureLoader,
-	DirectionalLight,
-	DoubleSide,
 	EquirectangularReflectionMapping,
-	Fog,
 	Mesh,
-	MeshBasicMaterial,
-	MeshLambertMaterial,
-	MeshPhongMaterial,
 	MeshPhysicalMaterial,
-	MeshStandardMaterial,
-	NearestFilter,
-	PlaneGeometry,
-	RepeatWrapping,
 	SphereGeometry,
-	sRGBEncoding,
 	TextureLoader,
-	Vector2,
 } from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import Stage from '../component/Stage'

@@ -1,21 +1,10 @@
 import React, { useRef, useEffect } from 'react'
 import {
-	AmbientLight,
-	BufferAttribute,
 	Color,
-	CubeRefractionMapping,
-	CubeTextureLoader,
 	DirectionalLight,
-	DoubleSide,
-	EquirectangularReflectionMapping,
-	Fog,
 	Mesh,
-	MeshBasicMaterial,
 	MeshLambertMaterial,
-	MeshPhongMaterial,
-	PlaneGeometry,
 	SphereGeometry,
-	sRGBEncoding,
 	TextureLoader,
 } from 'three'
 import Stage from '../component/Stage'

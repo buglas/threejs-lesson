@@ -1,23 +1,11 @@
 import React, { useRef, useEffect } from 'react'
 import {
-	AddOperation,
-	AmbientLight,
-	BufferAttribute,
-	Color,
-	CubeTextureLoader,
-	DirectionalLight,
-	DoubleSide,
 	EquirectangularReflectionMapping,
 	Fog,
 	Mesh,
 	MeshBasicMaterial,
-	MeshLambertMaterial,
-	MeshPhongMaterial,
-	MixOperation,
 	MultiplyOperation,
-	PlaneGeometry,
 	SphereGeometry,
-	sRGBEncoding,
 	TextureLoader,
 } from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'

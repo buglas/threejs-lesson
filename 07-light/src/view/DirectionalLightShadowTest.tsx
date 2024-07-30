@@ -23,6 +23,7 @@ import {
 	SphereGeometry,
 	sRGBEncoding,
 	TextureLoader,
+	Vector3,
 	WebGLCubeRenderTarget,
 } from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
@@ -88,6 +89,16 @@ renderer.shadowMap.enabled = true
 	plane.receiveShadow = true
 	scene.add(plane)
 }
+
+/* 法线 */
+const a = new Vector3(2, 0, 0)
+const b = new Vector3(0, 1, 0)
+const c = a.clone().cross(b)
+c.x = a.y * b.z - a.z * b.y
+c.y = a.z * b.x - a.x * b.z
+c.z = a.x * b.y - a.y * b.x
+c.setLength(1)
+console.log(c)
 
 const DirectionalLightShadowTest: React.FC = (): JSX.Element => {
 	const divRef = useRef<HTMLDivElement>(null)

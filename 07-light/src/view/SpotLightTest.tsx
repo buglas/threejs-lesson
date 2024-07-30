@@ -59,7 +59,6 @@ renderer.shadowMap.enabled = true
 	mapSize.height = 512 // default
 	camera.near = 1 // default
 	camera.far = 10 // default
-	console.log(camera.fov)
 
 	scene.add(light)
 }

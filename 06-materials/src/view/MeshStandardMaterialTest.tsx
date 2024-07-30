@@ -1,24 +1,11 @@
 import React, { useRef, useEffect } from 'react'
 import {
-	AmbientLight,
-	BufferAttribute,
 	Color,
-	CubeRefractionMapping,
-	CubeTextureLoader,
-	DirectionalLight,
-	DoubleSide,
 	EquirectangularReflectionMapping,
-	Fog,
 	Mesh,
-	MeshBasicMaterial,
-	MeshLambertMaterial,
-	MeshPhongMaterial,
 	MeshStandardMaterial,
-	PlaneGeometry,
 	SphereGeometry,
-	sRGBEncoding,
 	TextureLoader,
-	Vector2,
 } from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import Stage from '../component/Stage'
@@ -51,10 +38,13 @@ const sphereGeometry = new SphereGeometry(1, 36, 36)
 
 /* 材质 */
 const mat = new MeshStandardMaterial({ color: 0xaaaaaa })
+// 发光
+mat.emissive=new Color(0x00acec)
+mat.emissiveIntensity=0.3
 // 光泽度
-mat.roughness = 0.4
+mat.roughness = 0.567
 // 金属度
-mat.metalness = 1
+// mat.metalness = 1
 // 金属度贴图
 // mat.metalnessMap = ballMetalnessTexture
 // 凹凸贴图

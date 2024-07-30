@@ -1,58 +1,16 @@
 import React, { useRef, useEffect } from 'react'
 
 import {
-	AmbientLight,
-	BufferAttribute,
-	CanvasTexture,
-	Color,
-	CubeRefractionMapping,
-	CubeTextureLoader,
-	DataTexture,
 	DirectionalLight,
-	DoubleSide,
 	EquirectangularReflectionMapping,
-	Fog,
 	Mesh,
 	MeshBasicMaterial,
-	MeshLambertMaterial,
-	MeshPhongMaterial,
-	MeshPhysicalMaterial,
 	MeshStandardMaterial,
-	MeshToonMaterial,
-	NearestFilter,
 	PlaneGeometry,
-	RepeatWrapping,
-	SphereGeometry,
-	sRGBEncoding,
-	TextureLoader,
-	Vector2,
-	RedFormat,
-	LuminanceFormat,
-	ShadowMaterial,
-	MeshDepthMaterial,
-	MathUtils,
 	BufferGeometry,
-	Float32BufferAttribute,
-	PointsMaterial,
-	Points,
-	LineBasicMaterial,
-	LineSegments,
-	Line,
-	LineDashedMaterial,
-	SpriteMaterial,
-	Sprite,
-	Texture,
-	Group,
-	OneFactor,
-	CustomBlending,
-	OneMinusSrcAlphaFactor,
-	SrcAlphaFactor,
-	DstAlphaFactor,
-	AdditiveBlending,
 	Vector3,
 	Plane,
 	BackSide,
-	BoxGeometry,
 	AlwaysStencilFunc,
 	IncrementWrapStencilOp,
 	DecrementWrapStencilOp,
@@ -62,9 +20,8 @@ import {
 } from 'three'
 import Stage from '../component/Stage'
 import './fullScreen.css'
-import { randFloatSpread } from 'three/src/math/MathUtils'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
-import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 /* 快速初始化项目 */
 const stage = new Stage(20, 20, 20)
