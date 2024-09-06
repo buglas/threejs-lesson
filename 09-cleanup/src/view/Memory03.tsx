@@ -3,13 +3,15 @@ import './fullScreen.css'
 import { Box } from '../component/Box'
 import { Link } from 'react-router-dom'
 
+const box=new Box('Memory03')
+
 const Memory03: React.FC = (): JSX.Element => {
 	const divRef = useRef<HTMLDivElement>(null)
-  const box=new Box('Memory03')
+  box.init()
   box.addEventListener('beforerender',({time})=>{
     box.rotate(time*0.001)
   })
-  box.init()
+  
 	useEffect(() => {
 		const { current } = divRef
 		if (!current) {
