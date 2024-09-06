@@ -54,20 +54,20 @@ class Box extends EventDispatcher<any>{
 
   resize(width: number, height: number) {
     const {renderer,camera}=this
-		camera&&(camera.aspect = width / height)
-		camera?.updateProjectionMatrix()
-		renderer?.setSize(width, height, true)
+		camera.aspect = width / height
+		camera.updateProjectionMatrix()
+		renderer.setSize(width, height, true)
 	}
 
-  render(){
+  render(time=0){
     const { renderer,scene, camera} = this
+    this.dispatchEvent( { type: 'beforerender',time});
     renderer.render(scene, camera);
+    this.dispatchEvent( { type: 'affterrender',time});
   }
 
   animate(time=0){
-    this.dispatchEvent( { type: 'beforerender',time});
-		this.render()
-    this.dispatchEvent( { type: 'affterrender',time});
+		this.render(time)
     this.frame=requestAnimationFrame(this.animate.bind(this))
   }
 
@@ -80,3 +80,4 @@ class Box extends EventDispatcher<any>{
 }
 
 export {Box}
+
